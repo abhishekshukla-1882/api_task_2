@@ -60,21 +60,7 @@ $container->set(
         return $view;
     }
 );
-// $loader = new Loader();
 
-// $loader->registerDirs(
-//     [
-//         APP_PATH . "/controllers",
-//         APP_PATH . "/models/"
-
-//     ]
-//     );
-//     $loader->registerNamespaces(
-//         [
-//             'App\Components' => APP_PATH . "/components"
-//         ]
-//         );
-//     $loader->register();
 // --------------------------------------------------------------------------------------------------
 $container->set(
     'url',
@@ -96,7 +82,6 @@ $container->set(
     'mongo',
     function () {
         $mongo = new \MongoDB\Client("mongodb://mongo", array("username"=>'root', "password"=>"password123"));
-        // mongo "mongodb+srv://sandbox.g819z.mongodb.net/myFirstDatabase" --username root
 
         return $mongo->storee;
     },
@@ -224,12 +209,6 @@ $container->set(
     }
 );
 
-// $eventsManager->attach(
-//     'application:beforeHandleRequest',
-//     new App\Listeners\NotificationListner()
-// );
-// $application->setEventsManager($eventsManager);
-
 // ------------------------------------------------------Acl -------------------------------------------
 
 
@@ -253,13 +232,6 @@ $container->set(
     }
 );
 // ------------------------------------------------------------------------------------------------------------------
-// $di->set( 
-//     "cookies", function () { 
-//        $cookies = new Cookies();  
-//        $cookies->useEncryption(false);  
-//        return $cookies; 
-//     } 
-//  ); 
 
 try {
     // Handle the request
