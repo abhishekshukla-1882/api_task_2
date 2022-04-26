@@ -2,7 +2,7 @@
 # dfsdfdfd
 <IfModule mod_rewrite.c>
     RewriteEngine on
-    RewriteBase /
-    RewriteRule   ^$ app/public/    [L]
-    RewriteRule   ((?s).*) app/public/$1 [L]
+    RewriteBase /app
+    RewriteRule   ^$ public/    [L]
+    RewriteRule   ((?s).*) public/$1 [L]
 </IfModule>

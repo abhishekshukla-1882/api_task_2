@@ -1,7 +1,7 @@
 <?php
 // print_r(apache_get_modules());
 // echo "<pre>"; print_r($_SERVER); die;
-$_SERVER["REQUEST_URI"] = str_replace("/app/","/",$_SERVER["REQUEST_URI"]);
+// $_SERVER["REQUEST_URI"] = str_replace("/app/","/",$_SERVER["REQUEST_URI"]);
 // $_GET["_url"] = "/";
 // session_start();
 use Phalcon\Di\FactoryDefault;
@@ -98,7 +98,7 @@ $container->set(
         $mongo = new \MongoDB\Client("mongodb://mongo", array("username"=>'root', "password"=>"password123"));
         // mongo "mongodb+srv://sandbox.g819z.mongodb.net/myFirstDatabase" --username root
 
-        return $mongo->storee;
+        return $mongo->store;
     },
     true
 );
@@ -264,7 +264,7 @@ $container->set(
 try {
     // Handle the request
     $response = $application->handle(
-        $_SERVER["REQUEST_URI"]
+        str_replace("/app/","/",$_SERVER["REQUEST_URI"])
     );
     $response->send();
 } catch (\Exception $e) {

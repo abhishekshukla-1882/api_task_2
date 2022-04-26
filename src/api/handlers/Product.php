@@ -4,6 +4,7 @@ use Phalcon\Di\Injectable;
 use Phalcon\Url;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use GuzzleHttp\Client;
 class Product extends Injectable{
     // function get($select = "", $limit= 10,$page =1){
     //     $products = array(
@@ -94,7 +95,7 @@ class Product extends Injectable{
             "iss" => "http://example.org",
             "aud" => "http://example.com",
             "iat" => 1356999524,
-            "nbf" => 1357000000,
+            //"nbf" => 1357000000,
             "role" => "admin"
         );
         $jwt = JWT::encode($payload, $key, 'HS256');
@@ -123,7 +124,26 @@ class Product extends Injectable{
                         'user_id'=> $value->_id,
                         'status'=>'pending'
                     );
+
                     $succes = $this->mongo->order->insertOne($data);
+                    // print_r($succes);
+                    $postdata = $succes->getinsertedId();
+                    // echo $postdata;
+                    // die;
+                    // array_push($data,$succes);
+                    $data += [
+                        '_id'=>$postdata
+                    ];
+                    // print_r($data);
+                    // die;
+                    $url="http://192.168.2.10:8080/app/index/insertorder";
+                    $client = new Client([
+                        'base_uri' => $url,
+                    ]);
+                    $response = $client->request('POST',"/app/index/insertorder" ,['form_params'=>$data]);
+                                
+                    $body = $response->getBody()->getContents();
+                    // die($body);
                     if($succes){
                         echo "Added Succesfully";
                         die;
@@ -148,6 +168,20 @@ class Product extends Injectable{
             ['_id'=> new \MongoDB\BSON\ObjectID($oid)],
              ['$set' => ["status"=>"$status"]],
         );
+        // print_r($order);
+        // die;
+        $data = array(
+            "oid"=>$oid,
+            "status" =>$status
+        );
+        $url="http://192.168.2.10:8080/app/index/updateorder";
+        $client = new Client([
+            'base_uri' => $url,
+        ]);
+        $response = $client->request('POST',"/app/index/updateorder" ,['form_params'=>$data]);
+                    
+        $body = $response->getBody()->getContents();
+        die($body);
         if($order){
             echo "Updated order $oid";
             die;

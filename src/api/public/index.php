@@ -35,15 +35,15 @@ $container->set(
     }
 );
 // ------------------------------------------NameSpace Register-------------------------------------------------
-$loader->registerNamespaces(
-    [
-        'Api\Handler'=>APP_PATH.'/handlers'
-    ]
-    );
-    $loader->register();
+// $loader->registerNamespaces(
+//     [
+//         'Api\Handlers'=>APP_PATH.'/handlers'
+//     ]
+//     );
+//     $loader->register();
 // -------------------------------------------------------------------------------------------------------------
 // ------------------------------------------Rest---------------------------------------------------------------
-    $prod = new Api\Handlers\Product();
+    // $prod = new Api\Handlers\Product();
     $app = new Micro($container);
 // ----------------------------------------Connecting Mongo database--------------------------------------------
     $container->set(
@@ -183,7 +183,16 @@ $app->before(
     );
 // -------------------------------------Handle request---------------------------------------------
 
+// $app->notFound(
+//     function () use ($app) {
+//         $app->response->setStatusCode(404, 'Not Found');
+//         $app->response->sendHeaders();
 
+//         $message = 'Nothing to see here. Move along....';
+//         $app->response->setContent($message);
+//         $app->response->send();
+//     }
+// );
 
 try{
     $app->handle(
@@ -192,4 +201,6 @@ try{
     );
 } catch (\Exception $e) {
     echo 'Exception: ', $e->getMessage();
+    echo 'Exception: ', $e->getFile();
+    echo 'Exception: ', $e->getLine();
 }
