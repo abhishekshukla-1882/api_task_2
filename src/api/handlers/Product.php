@@ -17,8 +17,8 @@ class Product extends Injectable{
     public function search($name=''){
         // print_r($name);
         // echo "<br>";
-        if(strpos($name,'%20')==true){
-            $n = explode('%20',$name);
+        if(strpos($name, '%20')==true){
+            $n = explode('%20', $name);
             foreach ($n as $str) {
                 $strarr[] = array('$or' => array(array("title" => array('$regex' => $str)), array("variations[0].name" => array('$regex' => $str))));
             }
@@ -34,8 +34,7 @@ class Product extends Injectable{
                 $prod[] = (array)$value;
             }
             
-            $response = $this->response->SetJsonContent($prod);
-            return $response;
+            return $this->response->SetJsonContent($prod);
            
         }
         else {
@@ -47,8 +46,7 @@ class Product extends Injectable{
                 $prod[] = (array)$value;
             }
             
-            $response = $this->response->SetJsonContent($prod);
-            return $response;
+            return $this->response->SetJsonContent($prod);
         }
     }
     public function get(){
@@ -63,24 +61,22 @@ class Product extends Injectable{
             // print_r($arr);
             
         }
-        $response = $this->response->SetJsonContent($arr);
-        return $response;
+        return $this->response->SetJsonContent($arr);
         die;
 
     }
     public function responses($no_of_res){
         $no = (int)$no_of_res;
-        $product = $this->mongo->products->find([],['limit'=>$no]);
+        $product = $this->mongo->products->find([], ['limit'=>$no]);
         $arr = array();
         foreach($product as $key => $value){
             $arr[] = (array)$value;
         }
-        $response = $this->response->SetJsonContent($arr);
-        return $response;
+        return $this->response->SetJsonContent($arr);
     }
-    public function pages($no){
+    public function pages($no):void{
         $no = (int)$no;
-        $product = $this->mongo->products->find([],['limit'=>(1*$no)]);
+        $product = $this->mongo->products->find([], ['limit'=>(1*$no)]);
         $arr = array();
         foreach($product as $key=>$value){
             $arr[] = (array)$value;
@@ -89,7 +85,7 @@ class Product extends Injectable{
         print_r($this->get('url'));
         // return $response;
     }
-    public function login(){
+    public function login():void{
         $key = "example_key";
         $payload = array(
             "iss" => "http://example.org",
@@ -102,7 +98,7 @@ class Product extends Injectable{
         echo $jwt;
         die;
     }
-    public function createorder(){
+    public function createorder(): void{
         $token = $this->request->getHeader('token');
         // echo "<br> aya<br>";
         $pid = $this->request->getHeader('pid');
@@ -140,7 +136,7 @@ class Product extends Injectable{
                     $client = new Client([
                         'base_uri' => $url,
                     ]);
-                    $response = $client->request('POST',"/app/index/insertorder" ,['form_params'=>$data]);
+                    $response = $client->request('POST', "/app/index/insertorder", ['form_params'=>$data]);
                                 
                     $body = $response->getBody()->getContents();
                     // die($body);
@@ -159,14 +155,14 @@ class Product extends Injectable{
             die;
         }
     }
-    public function updateorder(){
+    public function updateorder(): void{
         $token = $this->request->getHeader('token');
         $oid = $this->request->getHeader('oid');
         $status = $this->request->getHeader('status');
         // $order = $this->mongo->order->updateOne(['_id'=>new Mongo\BSON\ObjectID($oid)],['$set'=>['status'=>$status]]);
         $order =  $this->mongo->order->updateOne(
             ['_id'=> new \MongoDB\BSON\ObjectID($oid)],
-             ['$set' => ["status"=>"$status"]],
+            ['$set' => ["status"=>"$status"]],
         );
         // print_r($order);
         // die;
@@ -199,8 +195,7 @@ class Product extends Injectable{
             // print_r($arr);
             
         }
-        $response = $this->response->SetJsonContent($arr);
-        return $response;
+        return $this->response->SetJsonContent($arr);
     }
     
 }

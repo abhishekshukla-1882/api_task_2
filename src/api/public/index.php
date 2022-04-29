@@ -1,6 +1,6 @@
 <?php 
 // $_SERVER["REQUEST_URI"] = str_replace("/api/","/",$_SERVER["REQUEST_URI"]);
-
+use \Phalcon\Debug;
 use Phalcon\Config;
 use Phalcon\Loader;
 use Phalcon\Di\FactoryDefault;
@@ -41,7 +41,16 @@ $container->set(
 //     ]
 //     );
 //     $loader->register();
+
+
 // -------------------------------------------------------------------------------------------------------------
+
+$debug = new Debug();
+
+$debug
+    ->listenExceptions()
+    ->listenLowSeverity()
+    ->listen();
 // ------------------------------------------Rest---------------------------------------------------------------
     // $prod = new Api\Handlers\Product();
     $app = new Micro($container);
@@ -57,7 +66,7 @@ $container->set(
 // -----------------------------------------Setting up views-------------------------------------------------
     $container->set(
         'view',
-        function(){
+        function():void{
             $view = new View();
             $view->setViewsDir(
                 APP_PATH.'/views',
@@ -68,7 +77,7 @@ $container->set(
 //----------------------------------------------Setting up Url--------------------------------------------
     $container->set(
         'url',
-        function(){
+        function():void{
             $url = new Url();
             $url->setBaseUri(
                 '/'
@@ -193,7 +202,10 @@ $app->before(
 //         $app->response->send();
 //     }
 // );
-
+$profiler = new \Fabfuel\Prophiler\Profiler();
+$toolbar = new \Fabfuel\Prophiler\Toolbar($profiler);
+$toolbar->addDataCollector(new \Fabfuel\Prophiler\DataCollector\Request());
+echo $toolbar->render();
 try{
     $app->handle(
         $_SERVER['REQUEST_URI']

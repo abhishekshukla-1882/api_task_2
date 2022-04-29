@@ -122,7 +122,7 @@ $loader->registerNamespaces(
 
 
 
-// --------------------------------------------------------------Cache-------------------------
+// --------------------------------------------------------------Cache-------------------------------------
 $serializerFactory = new SerializerFactory();
 $adapterFactory    = new AdapterFactory($serializerFactory);
 

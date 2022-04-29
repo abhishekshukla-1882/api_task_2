@@ -24,6 +24,8 @@ RUN set -xe && \
         ${PWD}/cphalcon-${PHALCON_VERSION} \
     && \
     php -m
+    # composer
+COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 RUN apt-get update
 RUN apt-get install -y libcurl4-openssl-dev ssh nano pkg-config libssl-dev
 RUN pecl install mongodb xdebug && docker-php-ext-enable mongodb xdebug
